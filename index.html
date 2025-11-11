@@ -11,8 +11,8 @@
         position: relative;
         width: 100%;
         max-width: 400px;
-        height: 400px; /* 높이 증가: 350px -> 400px */
-        max-height: 400px; /* 높이 증가: 350px -> 400px */
+        height: 450px; /* 높이 추가 확장 */
+        max-height: 450px; /* 높이 추가 확장 */
         margin-left: auto;
         margin-right: auto;
       }
@@ -139,27 +139,8 @@
     </div>
 
     <script>
-        const processLabels = (labels) => {
-            return labels.map(label => {
-                if (typeof label === 'string' && label.length > 16) {
-                    const words = label.split(' ');
-                    const lines = [];
-                    let currentLine = '';
-                    words.forEach(word => {
-                        if ((currentLine + word).length > 16 && currentLine.length > 0) {
-                            lines.push(currentLine.trim());
-                            currentLine = word + ' ';
-                        } else {
-                            currentLine += word + ' ';
-                        }
-                    });
-                    lines.push(currentLine.trim());
-                    return lines;
-                }
-                return label;
-            });
-        };
-
+        // 기존의 복잡한 레이블 처리 로직은 제거하고, 간소화된 레이블을 사용합니다.
+        
         const tooltipTitleCallback = (tooltipItems) => {
             const item = tooltipItems[0];
             let label = item.chart.data.labels[item.dataIndex];
@@ -180,7 +161,9 @@
                         color: '#073B4C',
                         font: {
                             size: 14
-                        }
+                        },
+                        // 레이블 간 간격을 넓히기 위해 padding을 추가
+                        padding: 20
                     }
                 },
                 tooltip: {
@@ -196,11 +179,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const ctx2 = document.getElementById('session2Chart');
             if (ctx2) {
-                const session2Labels = ['복습 (5분)', '스토리보드 기획 (NotebookLM) (30분)', '영상 클립 제작 (Veo3) (40분)', '포스터 제작 (NanoBanana) (10분)', '마무리 (5분)'];
+                // 레이블 텍스트를 간소화합니다. 
+                const session2Labels = ['복습 (5분)', '스토리보드 기획 (30분)', '영상 클립 제작 (40분)', '포스터 제작 (10분)', '마무리 (5분)'];
                 new Chart(ctx2, {
                     type: 'doughnut',
                     data: {
-                        labels: processLabels(session2Labels),
+                        labels: session2Labels, // 간소화된 레이블 사용
                         datasets: [{
                             label: '2회차 시간 배분',
                             data: [5, 30, 40, 10, 5],
